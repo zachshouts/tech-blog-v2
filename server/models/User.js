@@ -30,14 +30,17 @@ const userSchema = new Schema({
   id: false,
 });
 
+// Retrieving the number of posts a user has created
 userSchema.virtual('postCount').get(function() {
   return this.posts.length;
 });
 
+// Retrieving the number of accounts a user is following
 userSchema.virtual('followingCount').get(function() {
   return this.following.length;
 });
 
+// Retrieving the number of followers a user has
 userSchema.virtual('followerCount').get(function() {
   return this.followers.length;
 });
