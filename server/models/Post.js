@@ -1,5 +1,22 @@
 const { Schema, model } = require('mongoose');
 
+
+// Comment does not get it's own model because a comment will only be accessed through its parent post
+const commentSchema = new Schema({
+  text: {
+    type: String,
+    required: true,
+  },
+  user_id: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  }
+});
+
 const postSchema = new Schema({
   title: {
     type: String,
@@ -39,20 +56,5 @@ postSchema.virtual('commentCount').get(function() {
 
 const Post = model('Post', postSchema);
 
-// Comment does not get it's own model because a comment will only be accessed through its parent post
-const commentSchema = new Schema({
-  text: {
-    type: String,
-    required: true,
-  },
-  user_id: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-  },
-  created_at: {
-    type: Date,
-    default: Date.now,
-  }
-});
 
 module.exports = Post;

@@ -58,6 +58,14 @@ module.exports = {
         const password = await bcrypt.hash(req.body.password, 10);
         userToUpdate = { ...userToUpdate, password: password };
       }
+
+      const user = await User.findOneAndUpdate({ _id: req.params.id }, userToUpdate, { new: true });
+
+      if (!user) {
+        res.status(404).json({ message: 'No user found with this id!' });
+      }
+
+      res.status(200).json(user);
     } catch (err) {
       res.status(500).json(err);
     }
@@ -82,29 +90,31 @@ module.exports = {
   async getSingleUser( req, res ) {
     try {
       const user = await User.findOne({ _id: req.params.id })
-      .populate({
-        path: 'posts',
-        populate: { path: 'comments' },
-      },
-      {
-        path: 'likes',
-      },
-      {
-        path: 'comments',
-      },
-      {
-        path: 'following',
-      },
-      {
-        path: 'followers',
-      });
+      // .populate({
+      //   path: 'posts',
+      //   populate: { path: 'comments' },
+      // },
+      // {
+      //   path: 'likes',
+      // },
+      // {
+      //   path: 'comments',
+      // },
+      // {
+      //   path: 'following',
+      // },
+      // {
+      //   path: 'followers',
+      // }
+      // );
 
       if (!user) {
         res.status(404).json({ message: 'No user found with this id!' });
-      } else {
-        res.status(200).json(user);
       }
+
+      res.status(200).json(user);
     } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   },
@@ -128,9 +138,11 @@ module.exports = {
         email: user.email,
         id: user._id,
       }, process.env.JWT_SECRET);
+      
 
       res.header('auth-token', token).json({ error: null, data: { user, token } });
     } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   },
