@@ -17,7 +17,7 @@ const postSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  comments: [ { type: Schema.Types.ObjectId, ref: 'Comment' } ],
+  comments: [ commentSchema ],
   likes: [ { type: Schema.Types.ObjectId, ref: 'User' } ],
 },
 {
@@ -38,5 +38,21 @@ postSchema.virtual('commentCount').get(function() {
 });
 
 const Post = model('Post', postSchema);
+
+// Comment does not get it's own model because a comment will only be accessed through its parent post
+const commentSchema = new Schema({
+  text: {
+    type: String,
+    required: true,
+  },
+  user_id: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  }
+});
 
 module.exports = Post;
