@@ -71,4 +71,39 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+
+  // Add comment to a post
+  async addComment( req, res ) {
+    try {
+      const comment = {
+        text: req.body.commentText,
+        user_id: req.body.user_id
+      };
+
+      const post = await Post.findOneAndUpdate({ _id: req.params.id }, { $push: { comments: comment } }, { new: true });
+
+      if (!post) {
+        res.status(400).json({ message: 'Error posting comment.' });
+      }
+
+      res.status(200).json({ message: 'Comment successfully posted' });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
+  // Remove a comment from a post
+  async removeComment( req, res ) {
+    try {
+      const post = await Post.findOneAndUpdate({ _id: req.params.id }, { $pull: { comments: { _id: req.params.commentId } } }, { new: true });
+
+      if (!post) {
+        res.status(400).json({ message: 'Could not delete the comment.'});
+      }
+
+      res.status(200).json({ message: 'Comment successfully deleted' });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  }
 };
