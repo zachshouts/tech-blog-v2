@@ -30,12 +30,12 @@ const Login = () => {
 
   return (
     <div className="relative h-full w-full">
-      <div className="w-full h-full lg:bg-opacity-50">
+      <div className="w-full h-screen bg-gray-200 bg-opacity-50">
         <nav className="px-12 py-5">
           <img src="/images/logo.png" className="h-12" alt="Logo" />
         </nav>
         <div className="flex justify-center">
-          <div className="bg-white bg-opacity-90 px-16 py-16 self-center mt-2 lg:w-2/5 lg:max-w-md rounded-xl w-full shadow-2xl">
+          <div className="bg-white bg-opacity-90 px-16 py-16 self-center mt-2 lg:w-2/5 lg:max-w-md rounded-xl w-full drop-shadow-xl">
             <h2 className="text-4xl mb-8 font-semibold">
               {variant === 'login' ? 'Sign in' : 'Register'}
             </h2>
@@ -64,12 +64,12 @@ const Login = () => {
                 onChange={handleInputChange} 
               />
             </div>
-            <button onClick={ variant === 'login' ?  () => login() : () => register() } className="bg-primary py-3 text-white rounded-md w-full mt-10 hover:bg-primary-darker transition">
+            <button onClick={ variant === 'login' ?  () => login() : () => register() } className="bg-primary py-3 text-white rounded-md w-full mt-10 hover:bg-primary-darker transition font-semibold">
               {variant === 'login' ? 'Login' : 'Sign up'}
             </button>
             <p className="text-neutral-700 mt-12">
               {variant === 'login' ? 'First time using SocioMatrix?' : 'Already have an account?'}
-              <span onClick={toggleVariant} className="text-primary-darker ml-1 hover:underline cursor-pointer">
+              <span onClick={toggleVariant} className="text-primary-darker font-semibold ml-1 hover:underline cursor-pointer">
                 {variant === 'login' ? 'Sign up' : 'Sign In'}
               </span>
               .

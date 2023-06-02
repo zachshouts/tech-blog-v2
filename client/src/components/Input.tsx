@@ -19,6 +19,7 @@ const Input: React.FC<InputProps> = ({ id, type, label, value, onChange }) => {
         className="
         block
         rounded-lg
+        drop-shadow-lg
         px-6
         pt-6
         pb-1
