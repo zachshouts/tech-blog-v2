@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Input } from '../components';
+import cookie from 'js-cookie';
 
 interface FormDataState {
   name: string;
@@ -8,6 +10,7 @@ interface FormDataState {
 }
 
 const Login = () => {
+  const navigate = useNavigate();
   const [ variant, setVariant ] = useState<'login' | 'register'>('login');
   const [ formData, setFormData ] = useState<FormDataState>({name: '', email: '', password: ''});
 
@@ -20,8 +23,26 @@ const Login = () => {
     setVariant((currentVariant) => currentVariant === 'login' ? 'register' : 'login');
   }, []);
 
-  const login = () => {
-    console.log('login');
+  const login = async ( e : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    console.log(formData);
+    e.preventDefault();
+    console.log(JSON.stringify(formData));
+    const query = await fetch('/api/users/auth', {
+      method: 'POST',
+      body: JSON.stringify(formData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const result = await query.json();
+
+    if (result && !result.err && result.data && result.data.token) {
+      cookie.set('auth-token', result.data.token, { expires: 3, sameSite: 'Strict' });
+      navigate('/');
+    } else {
+      console.log('Line 41 Error', result.err);
+    }
   };
 
   const register = () => {
@@ -64,7 +85,7 @@ const Login = () => {
                 onChange={handleInputChange} 
               />
             </div>
-            <button onClick={ variant === 'login' ?  () => login() : () => register() } className="bg-primary py-3 text-white rounded-md w-full mt-10 hover:bg-primary-darker transition font-semibold">
+            <button onClick={ variant === 'login' ?  (e) => login(e) : () => register() } className="bg-primary py-3 text-white rounded-md w-full mt-10 hover:bg-primary-darker transition font-semibold">
               {variant === 'login' ? 'Login' : 'Sign up'}
             </button>
             <p className="text-neutral-700 mt-12">
