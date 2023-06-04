@@ -8,12 +8,11 @@ module.exports = {
   async createUser( req, res ) {
     try {
       const password = await bcrypt.hash(req.body.password, 10);
-      
+
       const userToInsert = {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         email: req.body.email,
-        username: req.body.username,
         password: password,
       };
       

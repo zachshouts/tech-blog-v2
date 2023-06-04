@@ -4,7 +4,8 @@ import { Input } from '../components';
 import cookie from 'js-cookie';
 
 interface FormDataState {
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
 }
@@ -12,8 +13,7 @@ interface FormDataState {
 const Login = () => {
   const navigate = useNavigate();
   const [ variant, setVariant ] = useState<'login' | 'register'>('login');
-  const [ formData, setFormData ] = useState<FormDataState>({name: '', email: '', password: ''});
-
+  const [ formData, setFormData ] = useState<FormDataState>({first_name: '', last_name: '', email: '', password: ''});
 
   const handleInputChange = ((e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value })
@@ -24,9 +24,7 @@ const Login = () => {
   }, []);
 
   const login = async ( e : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log(formData);
     e.preventDefault();
-    console.log(JSON.stringify(formData));
     const query = await fetch('/api/users/auth', {
       method: 'POST',
       body: JSON.stringify(formData),
@@ -38,15 +36,30 @@ const Login = () => {
     const result = await query.json();
 
     if (result && !result.err && result.data && result.data.token) {
-      cookie.set('auth-token', result.data.token, { expires: 3, sameSite: 'Strict' });
-      navigate('/');
+      cookie.set('auth-token', result.data.token, { expires: 1, sameSite: 'Strict' });
+      setTimeout(() => navigate('/'), 1000);
+      
     } else {
       console.log('Line 41 Error', result.err);
     }
   };
 
-  const register = () => {
-    console.log('register');
+  const register = async ( e : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    const query = await fetch('/api/users/', {
+      method: 'POST',
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": 'application/json'
+      }
+    });
+    
+    if (query.status === 200) {
+      setFormData({ ...formData, password: '',});
+      setVariant('login');
+    }
+    const result = await query.json();
+
   };
 
   return (
@@ -61,14 +74,25 @@ const Login = () => {
               {variant === 'login' ? 'Sign in' : 'Register'}
             </h2>
             <div className="flex flex-col gap-4">
+
               {variant === 'register' && (
-                <Input
-                  id="name"
-                  type="text"
-                  label="Full Name"
-                  value={formData.name}
-                  onChange={handleInputChange} 
-                />
+                <>
+                  <Input
+                    id="first_name"
+                    type="text"
+                    label="First Name"
+                    value={formData.first_name}
+                    onChange={handleInputChange} 
+                  />
+
+                  <Input
+                    id='last_name'
+                    type="text"
+                    label="Last Name"
+                    value={formData.last_name}
+                    onChange={handleInputChange}
+                  />
+                </>
               )}
               <Input
                 id="email"
@@ -85,7 +109,7 @@ const Login = () => {
                 onChange={handleInputChange} 
               />
             </div>
-            <button onClick={ variant === 'login' ?  (e) => login(e) : () => register() } className="bg-primary py-3 text-white rounded-md w-full mt-10 hover:bg-primary-darker transition font-semibold">
+            <button onClick={ variant === 'login' ?  (e) => login(e) : (e) => register(e) } className="bg-primary py-3 text-white rounded-md w-full mt-10 hover:bg-primary-darker transition font-semibold">
               {variant === 'login' ? 'Login' : 'Sign up'}
             </button>
             <p className="text-neutral-700 mt-12">
