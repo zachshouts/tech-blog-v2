@@ -7,7 +7,7 @@ const commentSchema = new Schema({
     type: String,
     required: true,
   },
-  user_id: {
+  creator: {
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
@@ -26,7 +26,7 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
-  user_id: {
+  creator: {
     type: Schema.Types.ObjectId,
     ref: 'User',
   },

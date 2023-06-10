@@ -45,7 +45,7 @@ module.exports = {
   // Get all posts
   async getAllPost( req, res ) {
     try {
-      const posts = await Post.find({});
+      const posts = await Post.find({}).populate('creator');
 
       if (!posts) {
         res.status(404).json({ message: 'No posts found' });
@@ -60,7 +60,7 @@ module.exports = {
   // Get a single post
   async getSinglePost( req, res) {
     try {
-      const post = await Post.findOne({ _id: req.params.id });
+      const post = await Post.findOne({ _id: req.params.id }).populate('creator');
 
       if (!post) {
         res.status(404).json({ message: 'No post found with this id!' });
