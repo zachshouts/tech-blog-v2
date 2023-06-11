@@ -74,7 +74,7 @@ module.exports = {
   // Get all users
   async getAllUsers( req, res ) {
     try {
-      const users = await User.find({}).populate({ path: 'posts', populate: { path: 'comments' } });
+      const users = await User.find({}).populate('posts');
 
       if (!users) {
         res.status(404).json({ message: 'No users found' });
