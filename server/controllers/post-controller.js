@@ -1,10 +1,12 @@
-const { Post } = require('../models');
+const { Post, User } = require('../models');
 
 module.exports = {
   // Create new post
   async createPost( req, res ) {
     try {
       const newPost = await Post.create(req.body);
+
+      const userPosts = await User.findOneAndUpdate({ _id: newPost.creator }, { $push: { posts: newPost._id }});
 
       res.status(200).json(newPost);
     } catch (err) {
