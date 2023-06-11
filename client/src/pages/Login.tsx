@@ -37,7 +37,7 @@ const Login = () => {
 
     if (result && !result.err && result.data && result.data.token) {
       cookie.set('auth-token', result.data.token, { expires: 1, sameSite: 'Strict' });
-      setTimeout(() => navigate('/'), 1000);
+      setTimeout(() => navigate('/'), 2000);
       
     } else {
       console.log('Line 41 Error', result.err);

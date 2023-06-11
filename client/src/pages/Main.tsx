@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useUserAuthCtx } from "../context/UserAuth";
 import { useQuery } from '@tanstack/react-query';
 import { getAllPosts } from '../api/posts';
 
 const Homepage = () => {
   const user = useUserAuthCtx();
+  console.log(user);
   const { isLoading, isError, data, error } = useQuery({ queryKey: ['posts'], queryFn: getAllPosts });
 
  
@@ -22,7 +23,10 @@ const Homepage = () => {
       { !user ? (
         <p>The user is not logged in.</p>
       ) : (
-        <p>The user is logged in.</p>
+        <>
+          <p>The user is logged in.</p>
+          <p>{user.first_name}</p>
+        </>
       )}
       <br />
       { data.data.map( (post: { _id: string, title: string, content: string, creator: { first_name: string, last_name: string } }) => {

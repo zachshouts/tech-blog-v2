@@ -1,3 +1,3 @@
 
-export { default as Homepage } from './Homepage';
+export { default as Main } from './Main';
 export { default as Login } from './Login';

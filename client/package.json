@@ -12,6 +12,8 @@
     "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@headlessui/react": "^1.7.15",
+    "@heroicons/react": "^2.0.18",
     "@tanstack/react-query-devtools": "^4.29.12",
     "axios": "^1.4.0",
     "framer-motion": "^10.12.16",

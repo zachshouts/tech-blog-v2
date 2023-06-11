@@ -12,6 +12,7 @@ module.exports = {
       const userToInsert = {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
+        username: req.body.username,
         email: req.body.email,
         password: password,
       };
