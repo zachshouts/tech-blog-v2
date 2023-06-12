@@ -19,32 +19,51 @@ const Homepage = () => {
   }
 
   return (
-    <main className='flex'>
-      <div className='border flex flex-col justify-center text-center mx-5 w-1/3' id='col-1'>
-        <h1 className="w-full">Homepage</h1>
-        { !user ? (
-          <p className='w-full'>The user is not logged in.</p>
-        ) : (
-          <>
-            <p>The user is logged in.</p>
-            <p>{user.first_name}</p>
-          </>
-        )}
-
+    <main className='flex flex-col'>
+      <div className='w-full flex justify-between border-b p-2'>
+        <h1>Spacepark</h1>
+        <button>Create</button>
+        <img src='https://picsum.photos/40' className='rounded-md mx-2 w-[40px] h-[40px]' />
       </div>
 
-      <div className='mx-5 w-2/3' id='col-2'>
-        <PostInput />
-        <br />
-        { data.data.map( (post: { _id: string, title: string, content: string, creator: { first_name: string, last_name: string } }) => {
-          return (
-            <div key={post._id}>
-              <h2>{post.title}</h2>
-              <p>{`${post.creator.first_name} ${post.creator.last_name}`}</p>
-              <p>{post.content}</p>
-            </div>
-          )
-        })}
+      <div className='flex mt-2'>
+        <div className='border flex flex-col justify-center text-center mx-5 w-1/3' id='col-1'>
+          <h1 className="w-full">Homepage</h1>
+          { !user ? (
+            <p className='w-full'>The user is not logged in.</p>
+          ) : (
+            <>
+              <p>The user is logged in.</p>
+              <p>{user.first_name}</p>
+            </>
+          )}
+        </div>
+        <div className='mx-5 w-2/3' id='col-2'>
+          <PostInput />
+          <br />
+          { data.data.map( (post: { _id: string, title: string, content: string, creator: { first_name: string, last_name: string } }) => {
+            return (
+              <div key={post._id}>
+                <h2>{post.title}</h2>
+                <p>{`${post.creator.first_name} ${post.creator.last_name}`}</p>
+                <p>{post.content}</p>
+              </div>
+            )
+          })}
+        </div>
+        <div className='mx-5 w-1/3' id='col-3'>
+          <PostInput />
+          <br />
+          { data.data.map( (post: { _id: string, title: string, content: string, creator: { first_name: string, last_name: string } }) => {
+            return (
+              <div key={post._id}>
+                <h2>{post.title}</h2>
+                <p>{`${post.creator.first_name} ${post.creator.last_name}`}</p>
+                <p>{post.content}</p>
+              </div>
+            )
+          })}
+        </div>
       </div>
       
     </main>
